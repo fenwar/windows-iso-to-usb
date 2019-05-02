@@ -2,6 +2,7 @@
 
 ISO_FILE=$1
 NTFS_IMG=windows-10-ntfs.img
+START_OFFSET=598016
 
 # Create a temporary loopback mount for the ISO
 TEMP_MNT=$(mktemp -d)
@@ -20,7 +21,7 @@ dd if=/dev/zero of=${NTFS_IMG} bs=512 count=${NTFS_SIZE}
 NTFS_LOOP_DEV=$(sudo losetup -f --show ${NTFS_IMG})
 sudo mkntfs -f -L "iso-to-usb" -I \
     -s 512 -c 4096 \
-    -p 0 \
+    -p ${START_OFFSET} \
     -H 1 \
     -S 32 \
     -z 1 \
